@@ -1,47 +1,10 @@
 <!DOCTYPE HTML>
 <html style="position:absolute; left:150px; top:10px;" class="no-border">
-    <style>
-        body {background-color: powderblue;}
-        h1   {color: rgb(9, 9, 30);
-            font-family: Arial;}
-        html {color: rgb(9, 9, 30); font-family: Arial;} 
-        input, textarea {background-color: #D3D3D3;}
-        select {background-color: #D3D3D3;}
-        button {background-color: #D3D3D3;}
-        .topnav {
-		overflow: hidden;
-		background-color: powderblue;
-		}
-
-		.topnav a {
-		float: left;
-		color: black;
-		text-align: center;
-		padding: 14px 16px;
-		text-decoration: none;
-		font-size: 17px;
-		border: 1px solid black;
-		padding: 8px
-		}
-
-		.topnav a:hover {
-		background-color: #D3D3D3;
-		color: black;
-		}
-
-		.topnav a.active {
-		background-color: #D3D3D3;
-		color: Black;
-		}
-		table, th, td{
-			border: 1px solid black;
-			padding: 8px
-		} 
-    </style>
 	<head>
+		<link rel="stylesheet" href="styles.css">
 		<meta charset="UTF-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-    		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>Music API</title>
 	</head>
 	<body>
@@ -51,101 +14,36 @@
 		</div>
 		<h1>Music</h1>
 		<p>The page then shows on click the pictures and info of the albums of the artist</p>
-		<p>	Display some other info as well (songs of the album etc.)</p>
-		<p>	Extra points will be given for input field with custom search string</p>
+		<p>	Display some other info as well (songs of the album etc.) + boothstrap?</p>
         <br> 
 		<p><b>Please click on the artist name to get more information about their albums, songs and more</b></p>
-		<p id='moreInformation'></p>
-		<img id="xmlimage" src=""/>
+		
 		<div id="artist-div">
-			<table id="artist-table"></table>
+			<table id="artist-table" ></table>
+			<tr>
+				<td></td>
+			</tr>
+			<p id='moreInformation'></p>
+			<p id='evenMore'></p>
 		</div>
 		<br>
 		<br>
-		<label for="site-search">Search for another artist:</label>
+		<label for="site-search"><b>Search for another artist:</b></label>
 		<br>
 		<br>
 		<input type="search" id="artist-search">
-		<button onclick="searchArtist()">Search artist</button>
+		<button id="searchbutton">Search artist</button>
 		<form>
 			<label>
-				<br>
-				You searched for<br>
-                <input style="background:lightgrey" type="text" name="result" id="result" readonly>   
+				<br><b>You searched for:</b><br>
+                <p id="artistinfo"></p>   
             </label>
 		</form>
-		<script>
-		// Dynamic creation of API xml request, first AJAX object:
-			var xmlhttp = new XMLHttpRequest();
-		//Define needed variables:	
-			var xmlDoc;
-			var xmlDoc2;
-			var artistName;
-			var albumName
-			var i;
-		// get URL from https://www.last.fm/api/show/artist.getInfo for the artist information:
-			xmlhttp.open("GET", "https://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=Roxette&api_key=6a7c44231fcb6bf61bf8612e51bf4904", false);
-			xmlhttp.send();	
-		//Define what you want:	
-			xmlDoc = xmlhttp.responseXML; 
-			artistName = xmlDoc.getElementsByTagName("artist");
-		//Make simple table/list:	
-			table="<tr><th>Artist</th></tr>";
-		//Loop through all atists and define how to show in table:
-			for (i = 0; i <artistName.length; i++) { 
-				table += "<tr onclick='showInformation(" + i + ")'><td>";
-				table += artistName[i].getElementsByTagName("name")[0].childNodes[0].nodeValue;
-				table += "</td></tr>";
-			}
-		// Add information where to show the table with artist names:	
-			document.getElementById("artist-table").innerHTML = table;
-
-		//Show information when clicking on the artist name	
-			function showInformation(i){
-		//Need more API's for album information
-				xmlhttp.open("GET", "https://ws.audioscrobbler.com/2.0/?method=album.getinfo&api_key=6a7c44231fcb6bf61bf8612e51bf4904&artist=Roxette&album=Greatest+hits", false);
-				xmlhttp.send();	
-		//Define what you want:	
-				xmlDoc2 = xmlhttp.responseXML; 
-				albumName = xmlDoc.getElementsByTagName("album");
-		//Loop through the album information
-				for (i = 0; i <albumName.length; i++) { 
-		//If artist matches the album artist then take information from the album API			
-					if (albumName[i].getElementsByTagName("artist")==artistName[i].getElementsByTagName("name")){	
-						document.getElementById('moreInformation').innerHTML = "Artist: " +
-						albumName[i].getElementsByTagName("artist")[0].childNodes[0].nodeValue + "<br>Album: " +
-						albumName[i].getElementsByTagName("name")[0].childNodes[0].nodeValue + "<br>";
-						document.getElementById("xmlimage").innerHTML = albumName[i].getElementsByTagName("image")[0].childNodes[0].nodeValue;
-					}	
-				}	
-			}
-
-		//Make site search:
-			function searchArtist(){
-				var artistUrl;
-				if (document.getElementById(artist-search) != NULL){
-					artistSearch=document.getElementById(artist-search);
-					artistUrl = "https://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=" +artistSearch+"&api_key=6a7c44231fcb6bf61bf8612e51bf4904";
-
-				}
-		// get URL from https://www.last.fm/api/show/artist.getInfo for the artist information:
-				xmlhttp.open("GET", artistUrl, false);
-				xmlhttp.send();	
-		//Define what you want:	
-				xmlDoc = xmlhttp.responseXML; 
-				artistName = xmlDoc.getElementsByTagName("artist");
-		//Make simple table/list:	
-				form="Artist";
-		// Add information where to show the table with artist names:	
-				document.getElementById("result").innerHTML = form;
-		
-				var artistSearch;
-			}	
-		//Embedding spotify	with iframe style:
-        </script>
 		<br>
 		<br>
-		<iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/1XemRYgtQxol3lrQo9qdq6?utm_source=generator" width="100%" height="400" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-    </body>
+	<iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/1XemRYgtQxol3lrQo9qdq6?utm_source=generator" width="100%" height="400" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+		<script src="script.js">
+		</script>
+	</body>
 </html>
 
